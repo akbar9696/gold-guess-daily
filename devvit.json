@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+  "menu": {
+    "items": [
+      {
+        "description": "Post today's Gold Guess game to this subreddit",
+        "endpoint": "/internal/menu/post-create",
+        "forUserType": "moderator",
+        "label": "Create a new Gold Guess post",
+        "location": "subreddit"
+      }
+    ]
+  },
+  "name": "gold-guess-daily",
+  "permissions": {
+    "http": {
+      "domains": [
+        "api.gold-api.com"
+      ],
+      "enable": true
+    },
+    "reddit": {
+      "enable": true,
+      "scope": "user"
+    },
+    "redis": true
+  },
+  "post": {
+    "dir": "dist/client",
+    "entrypoints": {
+      "default": {
+        "entry": "splash.html",
+        "inline": true
+      },
+      "game": {
+        "entry": "game.html"
+      }
+    }
+  },
+  "scheduler": {
+    "tasks": {
+      "daily-post": {
+        "cron": "10 0 * * *",
+        "endpoint": "/internal/scheduler/daily-post"
+      },
+      "daily-reveal": {
+        "cron": "5 0 * * *",
+        "endpoint": "/internal/scheduler/daily-reveal"
+      }
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "server": {
+    "dir": "dist/server",
+    "entry": "index.cjs"
+  },
+  "triggers": {
+    "onAppInstall": "/internal/triggers/on-app-install"
+  },
+  "dev": {
+    "subreddit": "gold_guess_daily_dev"
+  }
+}
